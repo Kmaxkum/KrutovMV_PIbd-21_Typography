@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyModel", "TypographyModel\TypographyModel.csproj", "{5DB32DE0-A857-48DA-A6C0-58745F6AC526}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyServiceDAL", "TypographyServiceDAL\TypographyServiceDAL.csproj", "{12F4D863-4492-4692-B2E3-BE9E37271781}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyServiceImplementList", "TypographyServiceImplementList\TypographyServiceImplementList.csproj", "{DE041073-8CD7-4074-A7B4-C86E060F5104}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyView", "TypographyView\TypographyView.csproj", "{D508031F-61EB-46E5-8B7F-664A5BEEA49C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5DB32DE0-A857-48DA-A6C0-58745F6AC526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB32DE0-A857-48DA-A6C0-58745F6AC526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB32DE0-A857-48DA-A6C0-58745F6AC526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB32DE0-A857-48DA-A6C0-58745F6AC526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12F4D863-4492-4692-B2E3-BE9E37271781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12F4D863-4492-4692-B2E3-BE9E37271781}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12F4D863-4492-4692-B2E3-BE9E37271781}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12F4D863-4492-4692-B2E3-BE9E37271781}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE041073-8CD7-4074-A7B4-C86E060F5104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE041073-8CD7-4074-A7B4-C86E060F5104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE041073-8CD7-4074-A7B4-C86E060F5104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE041073-8CD7-4074-A7B4-C86E060F5104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D508031F-61EB-46E5-8B7F-664A5BEEA49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D508031F-61EB-46E5-8B7F-664A5BEEA49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D508031F-61EB-46E5-8B7F-664A5BEEA49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D508031F-61EB-46E5-8B7F-664A5BEEA49C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {181CCB59-B0C2-4CAA-93D8-7B97F1545E5B}
+	EndGlobalSection
+EndGlobal
