@@ -1,7 +1,9 @@
 ﻿using TypographyServiceDAL.Interfaces;
-using TypographyServiceImplementList.Implementations;
+using TypographyServiceImplementDataBase.Implementations;
+using TypographyServiceImplementDataBase;
 using System;
 using System.Windows.Forms;
+using System.Data.Entity;
 using Unity;
 using Unity.Lifetime;
 
@@ -23,11 +25,12 @@ namespace TypographyView
         public static IUnityContainer BuildUnityContainer()
         {
             var currentContainer = new UnityContainer();
-            currentContainer.RegisterType<ICustomerService, CustomerServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IPartService, PartServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IItemService, ItemServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IMainService, MainServiceList>(new HierarchicalLifetimeManager());
-            currentContainer.RegisterType<IStorageService, StorageServiceList>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<DbContext, TypographyDbContext>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<ICustomerService, CustomerServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IPartService, PartServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IItemService, ItemServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IStorageService, StorageServiceDB>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

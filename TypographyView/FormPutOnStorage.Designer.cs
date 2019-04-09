@@ -54,7 +54,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 17);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Канцтовар";
+            this.label2.Text = "Ингредиент";
             // 
             // label3
             // 

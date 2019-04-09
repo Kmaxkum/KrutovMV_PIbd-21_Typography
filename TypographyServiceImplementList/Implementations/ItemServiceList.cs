@@ -63,8 +63,7 @@ namespace TypographyServiceImplementList.Implementations
                .ToList()
                 };
             }
-            throw new Exception("Элемент не найден");
-
+            throw new Exception("Элемент не найден");
         }
         public void AddElement(ItemBindingModel model)
         {
@@ -104,8 +103,7 @@ model.ItemName);
                     Cnt = groupComponent.Cnt
                 });
             }
-        }
-
+        }
         public void UpdElement(ItemBindingModel model)
         {
             Item element = source.Items.FirstOrDefault(rec => rec.ItemName ==

@@ -129,7 +129,7 @@ namespace TypographyServiceImplementList.Implementations
         public void PutComponentOnStock(StoragePartBindingModel model)
         {
             StoragePart element = source.StorageParts.FirstOrDefault(rec =>
-            rec.StorageId == model.StorageId && rec.PartId == model.PartId);
+           rec.StorageId == model.StorageId && rec.PartId == model.PartId);
             if (element != null)
             {
                 element.Cnt += model.Cnt;

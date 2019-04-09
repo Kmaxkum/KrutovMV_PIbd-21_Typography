@@ -104,7 +104,7 @@ namespace TypographyView
                     CustomerId = Convert.ToInt32(comboBoxCustomer.SelectedValue),
                     ItemId = Convert.ToInt32(comboBoxItem.SelectedValue),
                     Cnt = Convert.ToInt32(textBoxCount.Text),
-                    TotalSum = Convert.ToInt32(textBoxTotal.Text)
+                    TotalSum = Convert.ToDecimal(textBoxTotal.Text)
                 });
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение",
                MessageBoxButtons.OK, MessageBoxIcon.Information);

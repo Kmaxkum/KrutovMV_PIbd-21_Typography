@@ -6,5 +6,6 @@
         public int ItemId { get; set; }
         public int PartId { get; set; }
         public int Cnt { get; set; }
+        public virtual Part Parts { get; set; }
     }
 }

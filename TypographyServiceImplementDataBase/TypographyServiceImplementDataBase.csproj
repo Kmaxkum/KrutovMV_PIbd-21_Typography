@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5DB32DE0-A857-48DA-A6C0-58745F6AC526}</ProjectGuid>
+    <ProjectGuid>{16291F24-35ED-4AB1-8B22-CE0B4A170EDA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TypographyModel</RootNamespace>
-    <AssemblyName>TypographyModel</AssemblyName>
+    <RootNamespace>TypographyServiceImplementDataBase</RootNamespace>
+    <AssemblyName>TypographyServiceImplementDataBase</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -48,19 +48,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Booking.cs" />
-    <Compile Include="BookingStatus.cs" />
-    <Compile Include="Customer.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemPart.cs" />
-    <Compile Include="Part.cs" />
+    <Compile Include="Implementations\CustomerServiceDB.cs" />
+    <Compile Include="Implementations\ItemServiceDB.cs" />
+    <Compile Include="Implementations\MainServiceDB.cs" />
+    <Compile Include="Implementations\PartServiceDB.cs" />
+    <Compile Include="Implementations\StorageServiceDB.cs" />
+    <Compile Include="Migrations\201903160958389_FirstMigration.cs" />
+    <Compile Include="Migrations\201903160958389_FirstMigration.Designer.cs">
+      <DependentUpon>201903160958389_FirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage.cs" />
-    <Compile Include="StoragePart.cs" />
+    <Compile Include="TypographyDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\TypographyModel\TypographyModel.csproj">
+      <Project>{5db32de0-a857-48da-a6c0-58745f6ac526}</Project>
+      <Name>TypographyModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TypographyServiceDAL\TypographyServiceDAL.csproj">
+      <Project>{12f4d863-4492-4692-b2e3-be9e37271781}</Project>
+      <Name>TypographyServiceDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TypographyServiceImplementList\TypographyServiceImplementList.csproj">
+      <Project>{de041073-8cd7-4074-a7b4-c86e060f5104}</Project>
+      <Name>TypographyServiceImplementList</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201903160958389_FirstMigration.resx">
+      <DependentUpon>201903160958389_FirstMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

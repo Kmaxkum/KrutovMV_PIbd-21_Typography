@@ -12,5 +12,7 @@ namespace TypographyModel
         public BookingStatus State { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime? DateImplement { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual Item Item { get; set; }
     }
 }
