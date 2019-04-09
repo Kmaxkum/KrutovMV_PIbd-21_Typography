@@ -3,12 +3,6 @@ using TypographyServiceDAL.Interfaces;
 using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unity;
 
@@ -59,6 +53,17 @@ namespace TypographyView
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormItems>();
+            form.ShowDialog();
+        }
+        private void storagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormStorages>();
+            form.ShowDialog();
+        }
+
+        private void putOnStorageItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormPutOnStorage>();
             form.ShowDialog();
         }
         private void buttonAdd_Click(object sender, EventArgs e)

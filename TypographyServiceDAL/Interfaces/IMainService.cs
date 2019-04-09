@@ -11,5 +11,6 @@ namespace TypographyServiceDAL.Interfaces
         void TakeOrderInWork(BookingBindingModel model);
         void FinishOrder(BookingBindingModel model);
         void PayOrder(BookingBindingModel model);
+        void PutComponentOnStock(StoragePartBindingModel model);
     }
 }

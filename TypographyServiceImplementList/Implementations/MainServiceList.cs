@@ -4,6 +4,7 @@ using TypographyServiceDAL.Interfaces;
 using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TypographyServiceImplementList.Implementations
 {
@@ -16,53 +17,26 @@ namespace TypographyServiceImplementList.Implementations
         }
         public List<BookingViewModel> GetList()
         {
-            List<BookingViewModel> result = new List<BookingViewModel>();
-            for (int i = 0; i < source.Bookings.Count; ++i)
-            {
-                string customerFIO = string.Empty;
-                for (int j = 0; j < source.Customers.Count; ++j)
+            List<BookingViewModel> result = source.Bookings
+                .Select(rec => new BookingViewModel
                 {
-                    if (source.Customers[j].Id == source.Bookings[i].CustomerId)
-                    {
-                        customerFIO = source.Customers[j].CustomerFIO;
-                        break;
-                    }
-                }
-                string itemName = string.Empty;
-                for (int j = 0; j < source.Items.Count; ++j)
-                {
-                    if (source.Items[j].Id == source.Bookings[i].ItemId)
-                    {
-                        itemName = source.Items[j].ItemName;
-                        break;
-                    }
-                }
-                result.Add(new BookingViewModel
-                {
-                    Id = source.Bookings[i].Id,
-                    CustomerId = source.Bookings[i].CustomerId,
-                    CustomerFIO = customerFIO,
-                    ItemId = source.Bookings[i].ItemId,
-                    ItemName = itemName,
-                    Cnt = source.Bookings[i].Cnt,
-                    TotalSum = source.Bookings[i].TotalSum,
-                    DateCreate = source.Bookings[i].DateCreate.ToLongDateString(),
-                    DateImplement = source.Bookings[i].DateImplement?.ToLongDateString(),
-                    State = source.Bookings[i].State.ToString()
-                });
-            }
+                    Id = rec.Id,
+                    CustomerId = rec.CustomerId,
+                    ItemId = rec.ItemId,
+                    DateCreate = rec.DateCreate.ToLongDateString(),
+                    DateImplement = rec.DateImplement?.ToLongDateString(),
+                    State = rec.State.ToString(),
+                    Cnt = rec.Cnt,
+                    TotalSum = rec.TotalSum,
+                    CustomerFIO = source.Customers.FirstOrDefault(recC => recC.Id == rec.CustomerId)?.CustomerFIO,
+                    ItemName = source.Items.FirstOrDefault(recP => recP.Id == rec.ItemId)?.ItemName,
+                })
+                .ToList();
             return result;
         }
         public void CreateOrder(BookingBindingModel model)
         {
-            int maxId = 0;
-            for (int i = 0; i < source.Bookings.Count; ++i)
-            {
-                if (source.Bookings[i].Id > maxId)
-                {
-                    maxId = source.Bookings[i].Id;
-                }
-            }
+            int maxId = source.Bookings.Count > 0 ? source.Bookings.Max(rec => rec.Id) : 0;
             source.Bookings.Add(new Booking
             {
                 Id = maxId + 1,
@@ -76,67 +50,102 @@ namespace TypographyServiceImplementList.Implementations
         }
         public void TakeOrderInWork(BookingBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Bookings.Count; ++i)
-            {
-                if (source.Bookings[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Booking element = source.Bookings.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Bookings[index].State != BookingStatus.Принят)
+            if (element.State != BookingStatus.Принят)
             {
                 throw new Exception("Заказ не в статусе \"Принят\"");
             }
-            source.Bookings[index].DateImplement = DateTime.Now;
-            source.Bookings[index].State = BookingStatus.Выполняется;
+            // смотрим по количеству компонентов на складах
+            var itemParts = source.ItemParts.Where(rec => rec.ItemId == element.ItemId);
+            foreach (var itemPart in itemParts)
+            {
+                int countOnStorage = source.StorageParts
+                    .Where(rec => rec.PartId == itemPart.PartId)
+                    .Sum(rec => rec.Cnt);
+                if (countOnStorage < itemPart.Cnt * element.Cnt)
+                {
+                    var componentName = source.Parts.FirstOrDefault(rec => rec.Id ==
+                   itemPart.PartId);
+                    throw new Exception("Не достаточно компонента " +
+                   componentName?.PartName + " требуется " + (itemPart.Cnt * element.Cnt) +
+                   ", в наличии " + countOnStorage);
+                }
+            }
+            // списываем
+            foreach (var itemPart in itemParts)
+            {
+                int countOnStorage = itemPart.Cnt * element.Cnt;
+                var stockParts = source.StorageParts.Where(rec => rec.PartId
+               == itemPart.PartId);
+                foreach (var storagePart in stockParts)
+                {
+                    // компонентов на одном слкаде может не хватать
+                    if (storagePart.Cnt >= countOnStorage)
+                    {
+                        storagePart.Cnt -= countOnStorage;
+                        break;
+                    }
+                    else
+                    {
+                        countOnStorage -= storagePart.Cnt;
+                        storagePart.Cnt = 0;
+                    }
+                }
+            }
+            element.DateImplement = DateTime.Now;
+            element.State = BookingStatus.Выполняется;
         }
         public void FinishOrder(BookingBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Bookings.Count; ++i)
-            {
-                if (source.Bookings[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Booking element = source.Bookings.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Bookings[index].State != BookingStatus.Выполняется)
+            if (element.State != BookingStatus.Выполняется)
             {
                 throw new Exception("Заказ не в статусе \"Выполняется\"");
             }
-            source.Bookings[index].State = BookingStatus.Готов;
+            element.State = BookingStatus.Готов;
+
         }
         public void PayOrder(BookingBindingModel model)
         {
-            int index = -1;
-            for (int i = 0; i < source.Bookings.Count; ++i)
-            {
-                if (source.Bookings[i].Id == model.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index == -1)
+            Booking element = source.Bookings.FirstOrDefault(rec => rec.Id == model.Id);
+            if (element == null)
             {
                 throw new Exception("Элемент не найден");
             }
-            if (source.Bookings[index].State != BookingStatus.Готов)
+            if (element.State != BookingStatus.Готов)
             {
                 throw new Exception("Заказ не в статусе \"Готов\"");
             }
-            source.Bookings[index].State = BookingStatus.Оплачен;
+            element.State = BookingStatus.Оплачен;
+        }
+        public void PutComponentOnStock(StoragePartBindingModel model)
+        {
+            StoragePart element = source.StorageParts.FirstOrDefault(rec =>
+            rec.StorageId == model.StorageId && rec.PartId == model.PartId);
+            if (element != null)
+            {
+                element.Cnt += model.Cnt;
+            }
+            else
+            {
+                int maxId = source.StorageParts.Count > 0 ?
+               source.StorageParts.Max(rec => rec.Id) : 0;
+                source.StorageParts.Add(new StoragePart
+                {
+                    Id = ++maxId,
+                    StorageId = model.StorageId,
+                    PartId = model.PartId,
+                    Cnt = model.Cnt
+                });
+            }
         }
     }
 }

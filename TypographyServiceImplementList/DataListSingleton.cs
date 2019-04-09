@@ -11,6 +11,8 @@ namespace TypographyServiceImplementList
         public List<Booking> Bookings { get; set; }
         public List<Item> Items { get; set; }
         public List<ItemPart> ItemParts { get; set; }
+        public List<Storage> Storages { get; set; }
+        public List<StoragePart> StorageParts { get; set; }
         private DataListSingleton()
         {
             Customers = new List<Customer>();
@@ -18,6 +20,8 @@ namespace TypographyServiceImplementList
             Bookings = new List<Booking>();
             Items = new List<Item>();
             ItemParts = new List<ItemPart>();
+            Storages = new List<Storage>();
+            StorageParts = new List<StoragePart>();
         }
         public static DataListSingleton GetInstance()
         {

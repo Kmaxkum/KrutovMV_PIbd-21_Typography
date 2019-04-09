@@ -33,6 +33,8 @@
             this.customerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.partToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.storagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.putOnStorageItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonRef = new System.Windows.Forms.Button();
@@ -47,7 +49,8 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.putOnStorageItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(717, 28);
@@ -59,7 +62,8 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.customerToolStripMenuItem,
             this.partToolStripMenuItem,
-            this.itemToolStripMenuItem});
+            this.itemToolStripMenuItem,
+            this.storagesToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(79, 24);
             this.helpToolStripMenuItem.Text = "Справка";
@@ -84,6 +88,20 @@
             this.itemToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
             this.itemToolStripMenuItem.Text = "Печатные изделия";
             this.itemToolStripMenuItem.Click += new System.EventHandler(this.itemToolStripMenuItem_Click);
+            // 
+            // storagesToolStripMenuItem
+            // 
+            this.storagesToolStripMenuItem.Name = "storagesToolStripMenuItem";
+            this.storagesToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
+            this.storagesToolStripMenuItem.Text = "Склады";
+            this.storagesToolStripMenuItem.Click += new System.EventHandler(this.storagesToolStripMenuItem_Click);
+            // 
+            // putOnStorageItem
+            // 
+            this.putOnStorageItem.Name = "putOnStorageItem";
+            this.putOnStorageItem.Size = new System.Drawing.Size(141, 24);
+            this.putOnStorageItem.Text = "Пополнить склад";
+            this.putOnStorageItem.Click += new System.EventHandler(this.putOnStorageItem_Click);
             // 
             // dataGridView
             // 
@@ -175,6 +193,8 @@
         private System.Windows.Forms.ToolStripMenuItem customerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem partToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem storagesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem putOnStorageItem;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonRef;
