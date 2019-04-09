@@ -43,22 +43,26 @@
   <ItemGroup>
     <Compile Include="BindingModels\BookingBindingModel.cs" />
     <Compile Include="BindingModels\CustomerBindingModel.cs" />
+    <Compile Include="BindingModels\EditionBindingModel.cs" />
     <Compile Include="BindingModels\ItemBindingModel.cs" />
     <Compile Include="BindingModels\ItemPartBindingModel.cs" />
     <Compile Include="BindingModels\PartBindingModel.cs" />
     <Compile Include="BindingModels\StorageBindingModel.cs" />
     <Compile Include="BindingModels\StoragePartBindingModel.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
+    <Compile Include="Interfaces\IEditionService.cs" />
     <Compile Include="Interfaces\IItemService.cs" />
     <Compile Include="Interfaces\IMainService.cs" />
     <Compile Include="Interfaces\IPartService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BookingViewModel.cs" />
+    <Compile Include="ViewModels\CustomerBookingViewModel.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
     <Compile Include="ViewModels\ItemPartViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="ViewModels\PartViewModel.cs" />
+    <Compile Include="ViewModels\StorageLoadViewModel.cs" />
     <Compile Include="ViewModels\StoragePartViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
   </ItemGroup>

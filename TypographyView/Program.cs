@@ -31,6 +31,7 @@ namespace TypographyView
             currentContainer.RegisterType<IItemService, ItemServiceDB>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IStorageService, StorageServiceDB>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<IEditionService, EditionServiceDB>(new HierarchicalLifetimeManager());
             return currentContainer;
         }
     }

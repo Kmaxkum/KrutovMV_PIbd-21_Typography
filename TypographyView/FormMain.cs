@@ -13,10 +13,12 @@ namespace TypographyView
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly IMainService service;
-        public FormMain(IMainService service)
+        private readonly IEditionService editionService;
+        public FormMain(IMainService service, IEditionService editionService)
         {
             InitializeComponent();
             this.service = service;
+            this.editionService = editionService;
         }
         private void LoadData()
         {
@@ -126,6 +128,39 @@ namespace TypographyView
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void costItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "doc|*.doc|docx|*.docx"
+            };
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    editionService.SaveItemPrice(new EditionBindingModel
+                    {
+                        FilePath = sfd.FileName
+                    });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void loadStoragesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormStoragesLoad>();
+            form.ShowDialog();
+        }
+        private void bookingCustomersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormCustomerBookings>();
+            form.ShowDialog();
         }
     }
 }
