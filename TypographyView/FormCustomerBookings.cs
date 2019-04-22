@@ -73,8 +73,5 @@ namespace TypographyView
                 }
             }
         }
-        private void FormConsumerBookings_Load(object sender, EventArgs e)
-        {
-        }
     }
 }

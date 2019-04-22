@@ -134,7 +134,6 @@
             this.Name = "FormCustomerBookings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Заказы клиентов";
-            this.Load += new System.EventHandler(this.FormConsumerBookings_Load);
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
             this.ResumeLayout(false);
