@@ -12,6 +12,8 @@ namespace TypographyServiceDAL.BindingModels
         [DataMember]
         public int ItemId { get; set; }
         [DataMember]
+        public int? WorkerId { get; set; }
+        [DataMember]
         public int Cnt { get; set; }
         [DataMember]
         public decimal TotalSum { get; set; }

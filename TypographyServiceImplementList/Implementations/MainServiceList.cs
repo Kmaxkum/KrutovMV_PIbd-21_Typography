@@ -34,6 +34,16 @@ namespace TypographyServiceImplementList.Implementations
                 .ToList();
             return result;
         }
+        public List<BookingViewModel> GetFreeOrders()
+        {
+            List<BookingViewModel> result = source.Bookings
+                .Select(rec => new BookingViewModel
+                {
+                    Id = rec.Id
+                })
+                .ToList();
+            return result;
+        }
         public void CreateOrder(BookingBindingModel model)
         {
             int maxId = source.Bookings.Count > 0 ? source.Bookings.Max(rec => rec.Id) : 0;

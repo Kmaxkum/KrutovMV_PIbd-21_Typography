@@ -49,6 +49,11 @@ namespace TypographyView
             var form = new FormItems();
             form.ShowDialog();
         }
+        private void workerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new FormWorkers();
+            form.ShowDialog();
+        }
         private void storagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new FormStorages();
@@ -65,40 +70,6 @@ namespace TypographyView
             var form = new FormBooking();
             form.ShowDialog();
             LoadData();
-        }
-        private void buttonProcess_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    APIClient.PostRequest<BookingBindingModel, bool>("api/Main/TakeOrderInWork", new BookingBindingModel { Id = id });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
-        }
-        private void buttonReady_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    APIClient.PostRequest<BookingBindingModel, bool>("api/Main/FinishOrder", new BookingBindingModel { Id = id });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-                }
-            }
         }
         private void buttonPaid_Click(object sender, EventArgs e)
         {
@@ -153,6 +124,18 @@ namespace TypographyView
         {
             var form = new FormCustomerBookings();
             form.ShowDialog();
+        }
+        private void runWorkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                APIClient.PostRequest<int?, bool>("api/Main/StartWork", null);
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

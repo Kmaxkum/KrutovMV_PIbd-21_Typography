@@ -18,6 +18,11 @@ namespace TypographyServiceDAL.ViewModels
         [DisplayName("Печатное изделие")]
         public string ItemName { get; set; }
         [DataMember]
+        public int? WorkerId { get; set; }
+        [DataMember]
+        [DisplayName("Имя рабочего")]
+        public string WorkerName { get; set; }
+        [DataMember]
         [DisplayName("Количество")]
         public int Cnt { get; set; }
         [DataMember]

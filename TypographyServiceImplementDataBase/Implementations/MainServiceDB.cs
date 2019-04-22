@@ -43,6 +43,17 @@ namespace TypographyServiceImplementDataBase.Implementations
             .ToList();
             return result;
         }
+        public List<BookingViewModel> GetFreeOrders()
+        {
+            List<BookingViewModel> result = context.Bookings
+                .Where(x => x.State == BookingStatus.Принят || x.State == BookingStatus.НедостаточноРесурсов)
+                .Select(rec => new BookingViewModel
+                {
+                    Id = rec.Id
+                })
+                .ToList();
+            return result;
+        }
         public void CreateOrder(BookingBindingModel model)
         {
             context.Bookings.Add(new Booking

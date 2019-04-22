@@ -50,12 +50,14 @@
     <Compile Include="BindingModels\PartBindingModel.cs" />
     <Compile Include="BindingModels\StorageBindingModel.cs" />
     <Compile Include="BindingModels\StoragePartBindingModel.cs" />
+    <Compile Include="BindingModels\WorkerBindingModel.cs" />
     <Compile Include="Interfaces\ICustomerService.cs" />
     <Compile Include="Interfaces\IEditionService.cs" />
     <Compile Include="Interfaces\IItemService.cs" />
     <Compile Include="Interfaces\IMainService.cs" />
     <Compile Include="Interfaces\IPartService.cs" />
     <Compile Include="Interfaces\IStorageService.cs" />
+    <Compile Include="Interfaces\IWorkerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\BookingViewModel.cs" />
     <Compile Include="ViewModels\CustomerBookingViewModel.cs" />
@@ -66,6 +68,7 @@
     <Compile Include="ViewModels\StorageLoadViewModel.cs" />
     <Compile Include="ViewModels\StoragePartViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
+    <Compile Include="ViewModels\WorkerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TypographyModel\TypographyModel.csproj">

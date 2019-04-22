@@ -5,22 +5,22 @@ using System.Windows.Forms;
 
 namespace TypographyView
 {
-    public partial class FormCustomer : Form
+    public partial class FormWorker : Form
     {
         public int Id { set { id = value; } }
         private int? id;
-        public FormCustomer()
+        public FormWorker()
         {
             InitializeComponent();
         }
-        private void FormCustomer_Load(object sender, EventArgs e)
+        private void FormWorker_Load(object sender, EventArgs e)
         {
             if (id.HasValue)
             {
                 try
                 {
-                    CustomerViewModel view = APIClient.GetRequest<CustomerViewModel>("api/Customer/Get/" + id.Value);
-                    maskedTextBoxInitials.Text = view.CustomerFIO;
+                    WorkerViewModel view = APIClient.GetRequest<WorkerViewModel>("api/Worker/Get/" + id.Value);
+                    maskedTextBoxInitials.Text = view.WorkerFIO;
                 }
                 catch (Exception ex)
                 {
@@ -39,17 +39,17 @@ namespace TypographyView
             {
                 if (id.HasValue)
                 {
-                    APIClient.PostRequest<CustomerBindingModel, bool>("api/Customer/UpdElement", new CustomerBindingModel
+                    APIClient.PostRequest<WorkerBindingModel, bool>("api/Worker/UpdElement", new WorkerBindingModel
                     {
                         Id = id.Value,
-                        CustomerFIO = maskedTextBoxInitials.Text
+                        WorkerFIO = maskedTextBoxInitials.Text
                     });
                 }
                 else
                 {
-                    APIClient.PostRequest<CustomerBindingModel, bool>("api/Customer/AddElement", new CustomerBindingModel
+                    APIClient.PostRequest<WorkerBindingModel, bool>("api/Worker/AddElement", new WorkerBindingModel
                     {
-                        CustomerFIO = maskedTextBoxInitials.Text
+                        WorkerFIO = maskedTextBoxInitials.Text
                     });
                 }
                 MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -61,6 +61,7 @@ namespace TypographyView
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

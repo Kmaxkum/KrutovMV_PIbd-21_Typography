@@ -48,6 +48,7 @@ namespace TypographyRestApi
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<DbContext, TypographyDbContext>(new HierarchicalLifetimeManager());
             container.RegisterType<ICustomerService, CustomerServiceDB>(new HierarchicalLifetimeManager());
+            container.RegisterType<IWorkerService, WorkerServiceDB>(new HierarchicalLifetimeManager());
             container.RegisterType<IPartService, PartServiceDB>(new HierarchicalLifetimeManager());
             container.RegisterType<IItemService, ItemServiceDB>(new HierarchicalLifetimeManager());
             container.RegisterType<IMainService, MainServiceDB>(new HierarchicalLifetimeManager());

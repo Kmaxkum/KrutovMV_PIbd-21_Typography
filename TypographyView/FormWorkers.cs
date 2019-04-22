@@ -6,14 +6,14 @@ using System.Windows.Forms;
 
 namespace TypographyView
 {
-    public partial class FormStorages : Form
+    public partial class FormWorkers : Form
     {
-        public FormStorages()
+        public FormWorkers()
         {
             InitializeComponent();
         }
 
-        private void FormStorages_Load(object sender, EventArgs e)
+        private void FormWorkers_Load(object sender, EventArgs e)
         {
             LoadData();
         }
@@ -22,7 +22,7 @@ namespace TypographyView
         {
             try
             {
-                List<StorageViewModel> list = APIClient.GetRequest<List<StorageViewModel>>("api/Storage/GetList");
+                List<WorkerViewModel> list = APIClient.GetRequest<List<WorkerViewModel>>("api/Worker/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -38,7 +38,7 @@ namespace TypographyView
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = new FormStorage();
+            var form = new FormWorker();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -49,7 +49,7 @@ namespace TypographyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = new FormStorage();
+                var form = new FormWorker();
                 form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -65,10 +65,10 @@ namespace TypographyView
                 if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int id =
-                        Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        APIClient.PostRequest<StorageBindingModel, bool>("api/Storage/DelElement", new StorageBindingModel { Id = id });
+                        APIClient.PostRequest<CustomerBindingModel, bool>("api/Worker/DelElement", new CustomerBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
