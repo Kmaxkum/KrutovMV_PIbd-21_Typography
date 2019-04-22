@@ -1,26 +1,22 @@
 ﻿using TypographyServiceDAL.BindingModels;
-using TypographyServiceDAL.Interfaces;
+using TypographyServiceDAL.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormStoragesLoad : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IEditionService service;
-        public FormStoragesLoad(IEditionService service)
+        public FormStoragesLoad()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormStoragesLoad_Load(object sender, EventArgs e)
         {
             try
             {
-                var dict = service.GetStoragesLoad();
+                var dict = APIClient.GetRequest<List<StorageLoadViewModel>>("api/Edition/GetStoragesLoad");
                 if (dict != null)
                 {
                     dataGridView.Rows.Clear();
@@ -51,17 +47,15 @@ namespace TypographyView
             {
                 try
                 {
-                    service.SaveStoragesLoad(new EditionBindingModel
+                    APIClient.PostRequest<EditionBindingModel, bool>("api/Edition/SaveStoragesLoad", new EditionBindingModel
                     {
                         FilePath = sfd.FileName
                     });
-                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

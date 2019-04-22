@@ -1,21 +1,16 @@
-﻿using TypographyServiceDAL.Interfaces;
+﻿using TypographyServiceDAL.BindingModels;
 using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormItems : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IItemService service;
-        public FormItems(IItemService service)
+        public FormItems()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormItems_Load(object sender, EventArgs e)
         {
@@ -25,7 +20,7 @@ namespace TypographyView
         {
             try
             {
-                List<ItemViewModel> list = service.GetList();
+                List<ItemViewModel> list = APIClient.GetRequest<List<ItemViewModel>>("api/Item/GetList/");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -36,13 +31,12 @@ namespace TypographyView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormItem>();
+            var form = new FormItem();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 LoadData();
@@ -52,7 +46,7 @@ namespace TypographyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormItem>();
+                var form = new FormItem();
                 form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -64,18 +58,16 @@ namespace TypographyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo,
-               MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        service.DelElement(id);
+                        APIClient.PostRequest<ItemBindingModel, bool>("api/Item/DelElement", new ItemBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     LoadData();
                 }

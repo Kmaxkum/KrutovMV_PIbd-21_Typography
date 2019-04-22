@@ -1,31 +1,19 @@
 ﻿using TypographyServiceDAL.BindingModels;
-using TypographyServiceDAL.Interfaces;
 using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormItem : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
         public int Id { set { id = value; } }
-        private readonly IItemService service;
         private int? id;
         private List<ItemPartViewModel> productComponents;
-        public FormItem(IItemService service)
+        public FormItem()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormItem_Load(object sender, EventArgs e)
         {
@@ -33,7 +21,7 @@ namespace TypographyView
             {
                 try
                 {
-                    ItemViewModel view = service.GetElement(id.Value);
+                    ItemViewModel view = APIClient.GetRequest<ItemViewModel>("api/Item/Get/" + id.Value);
                     if (view != null)
                     {
                         maskedTextBoxName.Text = view.ItemName;
@@ -44,8 +32,7 @@ namespace TypographyView
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -70,13 +57,12 @@ namespace TypographyView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormItemPart>();
+            var form = new FormItemPart();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 if (form.Model != null)
@@ -94,13 +80,11 @@ namespace TypographyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var form = Container.Resolve<FormItemPart>();
-                form.Model =
-               productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex];
+                var form = new FormItemPart();
+                form.Model = productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex];
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex] =
-                   form.Model;
+                    productComponents[dataGridView.SelectedRows[0].Cells[0].RowIndex] = form.Model;
                     LoadData();
                 }
             }
@@ -109,18 +93,15 @@ namespace TypographyView
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo,
-               MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     try
                     {
-
                         productComponents.RemoveAt(dataGridView.SelectedRows[0].Cells[0].RowIndex);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     LoadData();
                 }
@@ -134,20 +115,17 @@ namespace TypographyView
         {
             if (string.IsNullOrEmpty(maskedTextBoxName.Text))
             {
-                MessageBox.Show("Заполните название", "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show("Заполните название", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (string.IsNullOrEmpty(maskedTextBoxCost.Text))
             {
-                MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (productComponents == null || productComponents.Count == 0)
             {
-                MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
@@ -165,7 +143,7 @@ namespace TypographyView
                 }
                 if (id.HasValue)
                 {
-                    service.UpdElement(new ItemBindingModel
+                    APIClient.PostRequest<ItemBindingModel, bool>("api/Item/UpdElement", new ItemBindingModel
                     {
                         Id = id.Value,
                         ItemName = maskedTextBoxName.Text,
@@ -175,22 +153,20 @@ namespace TypographyView
                 }
                 else
                 {
-                    service.AddElement(new ItemBindingModel
+                    APIClient.PostRequest<ItemBindingModel, bool>("api/Item/AddElement", new ItemBindingModel
                     {
                         ItemName = maskedTextBoxName.Text,
                         Cost = Convert.ToInt32(maskedTextBoxCost.Text),
                         ItemPart = productComponentBM
                     });
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение",
-               MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void buttonCancel_Click(object sender, EventArgs e)

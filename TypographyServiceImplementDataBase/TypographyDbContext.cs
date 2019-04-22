@@ -5,7 +5,7 @@ namespace TypographyServiceImplementDataBase
 {
     public class TypographyDbContext : DbContext
     {
-        public TypographyDbContext() : base("TypographyDataBase")
+        public TypographyDbContext() : base("TypographyDataBase1")
         {
             //настройки конфигурации для entity
             Configuration.ProxyCreationEnabled = false;

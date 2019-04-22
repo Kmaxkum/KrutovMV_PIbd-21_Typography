@@ -1,39 +1,27 @@
-﻿using TypographyServiceDAL.Interfaces;
-using TypographyServiceDAL.ViewModels;
+﻿using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormItemPart : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
         public ItemPartViewModel Model
         {
             set { model = value; }
             get { return model; }
         }
-        private readonly IPartService service;
         private ItemPartViewModel model;
-        public FormItemPart(IPartService service)
+        public FormItemPart()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void FormItemPart_Load(object sender, EventArgs e)
         {
             try
             {
-                List<PartViewModel> list = service.GetList();
+                List<PartViewModel> list = APIClient.GetRequest<List<PartViewModel>>("api/Part/GetList");
                 if (list != null)
                 {
                     comboBoxProductComponents.DisplayMember = "PartName";
@@ -44,8 +32,7 @@ namespace TypographyView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             if (model != null)
             {
@@ -58,14 +45,12 @@ namespace TypographyView
         {
             if (string.IsNullOrEmpty(maskedTextBoxCount.Text))
             {
-                MessageBox.Show("Заполните поле Количество", "Ошибка",
-               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Заполните поле Количество", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (comboBoxProductComponents.SelectedValue == null)
             {
-                MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show("Выберите компонент", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             try
@@ -83,15 +68,13 @@ namespace TypographyView
                 {
                     model.Cnt = Convert.ToInt32(maskedTextBoxCount.Text);
                 }
-                MessageBox.Show("Сохранение прошло успешно", "Сообщение",
-               MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void buttonCancel_Click(object sender, EventArgs e)

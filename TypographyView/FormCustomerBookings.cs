@@ -1,21 +1,17 @@
 ﻿using TypographyServiceDAL.BindingModels;
-using TypographyServiceDAL.Interfaces;
+using TypographyServiceDAL.ViewModels;
 using Microsoft.Reporting.WinForms;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormCustomerBookings : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IEditionService service;
-        public FormCustomerBookings(IEditionService service)
+        public FormCustomerBookings()
         {
             InitializeComponent();
-            this.service = service;
         }
         private void buttonMake_Click(object sender, EventArgs e)
         {
@@ -30,12 +26,12 @@ namespace TypographyView
                     "с " + dateTimePickerFrom.Value.ToShortDateString() +
                     " по " + dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
-                var dataSource = service.GetCustomerBookings(new EditionBindingModel
+                List<CustomerBookingViewModel> response = APIClient.PostRequest<EditionBindingModel, List<CustomerBookingViewModel>>("api/Edition/GetCustomerBookings", new EditionBindingModel
                 {
                     DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
                 });
-                ReportDataSource source = new ReportDataSource("DataSetBooking", dataSource);
+                ReportDataSource source = new ReportDataSource("DataSetBooking", response);
                 reportViewer.LocalReport.DataSources.Add(source);
                 reportViewer.RefreshReport();
             }
@@ -59,7 +55,7 @@ namespace TypographyView
             {
                 try
                 {
-                    service.SaveCustomerBookings(new EditionBindingModel
+                    APIClient.PostRequest<EditionBindingModel, bool>("api/Edition/SaveCustomerBookings", new EditionBindingModel
                     {
                         FilePath = sfd.FileName,
                         DateFrom = dateTimePickerFrom.Value,

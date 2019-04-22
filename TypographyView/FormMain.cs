@@ -1,30 +1,22 @@
 ﻿using TypographyServiceDAL.BindingModels;
-using TypographyServiceDAL.Interfaces;
 using TypographyServiceDAL.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Unity;
 
 namespace TypographyView
 {
     public partial class FormMain : Form
     {
-        [Dependency]
-        public new IUnityContainer Container { get; set; }
-        private readonly IMainService service;
-        private readonly IEditionService editionService;
-        public FormMain(IMainService service, IEditionService editionService)
+        public FormMain()
         {
             InitializeComponent();
-            this.service = service;
-            this.editionService = editionService;
         }
         private void LoadData()
         {
             try
             {
-                List<BookingViewModel> list = service.GetList();
+                List<BookingViewModel> list = APIClient.GetRequest<List<BookingViewModel>>("api/Main/GetList");
                 if (list != null)
                 {
                     dataGridView.DataSource = list;
@@ -44,33 +36,33 @@ namespace TypographyView
         }
         private void customerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomers>();
+            var form = new FormCustomers();
             form.ShowDialog();
         }
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormParts>();
+            var form = new FormParts();
             form.ShowDialog();
         }
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormItems>();
+            var form = new FormItems();
             form.ShowDialog();
         }
         private void storagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStorages>();
+            var form = new FormStorages();
             form.ShowDialog();
         }
 
         private void putOnStorageItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormPutOnStorage>();
+            var form = new FormPutOnStorage();
             form.ShowDialog();
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormBooking>();
+            var form = new FormBooking();
             form.ShowDialog();
             LoadData();
         }
@@ -81,7 +73,7 @@ namespace TypographyView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.TakeOrderInWork(new BookingBindingModel { Id = id });
+                    APIClient.PostRequest<BookingBindingModel, bool>("api/Main/TakeOrderInWork", new BookingBindingModel { Id = id });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -98,7 +90,7 @@ namespace TypographyView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.FinishOrder(new BookingBindingModel { Id = id });
+                    APIClient.PostRequest<BookingBindingModel, bool>("api/Main/FinishOrder", new BookingBindingModel { Id = id });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -115,7 +107,7 @@ namespace TypographyView
                 int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                 try
                 {
-                    service.PayOrder(new BookingBindingModel { Id = id });
+                    APIClient.PostRequest<BookingBindingModel, bool>("api/Main/PayOrder", new BookingBindingModel { Id = id });
                     LoadData();
                 }
                 catch (Exception ex)
@@ -140,7 +132,7 @@ namespace TypographyView
             {
                 try
                 {
-                    editionService.SaveItemPrice(new EditionBindingModel
+                    APIClient.PostRequest<EditionBindingModel, bool>("api/Edition/SaveItemPrice", new EditionBindingModel
                     {
                         FilePath = sfd.FileName
                     });
@@ -154,12 +146,12 @@ namespace TypographyView
         }
         private void loadStoragesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormStoragesLoad>();
+            var form = new FormStoragesLoad();
             form.ShowDialog();
         }
         private void bookingCustomersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = Container.Resolve<FormCustomerBookings>();
+            var form = new FormCustomerBookings();
             form.ShowDialog();
         }
     }
